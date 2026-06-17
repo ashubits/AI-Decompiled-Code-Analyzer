@@ -219,8 +219,11 @@ def process_file(file_info):
             report_folder = os.path.join(REPORTS_DIR, binary_md5)
             os.makedirs(report_folder, exist_ok=True)
             
-            # Copy decompiled file
-            shutil.copy2(file_info[0], os.path.join(report_folder, file_info[1]))
+            # Copy decompiled file if it is not already in the target folder
+            src_path = os.path.abspath(file_info[0])
+            dst_path = os.path.abspath(os.path.join(report_folder, file_info[1]))
+            if src_path != dst_path:
+                shutil.copy2(src_path, dst_path)
             
             # Write overall verdict
             overall_path = os.path.join(report_folder, "overall_verdict.md")
